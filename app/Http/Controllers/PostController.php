@@ -12,7 +12,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        return Post::find();
+
+        return Post::all();
     }
 
     /**
@@ -20,10 +21,13 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        // return $request;
         $fields = $request->validate([
             'title' => 'required|max:255',
             'body' => 'required'
         ]);
+
+        $post = Post::create($fields);
 
         return $post;
     }
@@ -39,7 +43,7 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
         $fields = $request->validate([
             'title' => 'required|max:255',
@@ -54,7 +58,7 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy()
+    public function destroy(Post $post)
     {
         $post->delete();
         return ['message' => "The post ($post->id) has been deleted"];
